@@ -72,9 +72,11 @@ public class Principal {
                     listarAutores();
                     break;
                 case 4:
-                    //
+                    listarAutoresVivos();
                     break;
                 case 5:
+
+                    listarLibrosPorIdioma();
                     //
                     break;
 
@@ -234,4 +236,69 @@ public class Principal {
 
 
     }
+
+    public void listarAutoresVivos () {
+
+        System.out.println("Ingrese una fecha");
+        var fecha = teclado.nextInt();
+        teclado.nextLine();
+
+        List<Autor> autores = autorRepositorio.buscarAutoresVivos(fecha);
+
+        autores.forEach(a-> System.out.printf("""
+                Autor: %s
+                Fecha de Nacimiento: %d
+                Libros: %s%n""", a.getNombre(), a.getFechaNacimiento(), a.getLibros()));
+
+
+    }
+
+
+    public void listarLibrosPorIdioma () {
+        System.out.println("Indique el idioma de la siguiente lista");
+        System.out.println("""
+                1 - En (Inglés)
+                2 - ES (Español)
+                3 - FR (francés)
+                4 - PT (Portugués)
+                5 - DE (Alemán)""");
+
+        Integer opcion = teclado.nextInt();
+        teclado.nextLine();
+        if(opcion > 5 || opcion <= 0) {
+            System.out.println("Opción incorrecta. Elija de nuevo");
+        } else {
+            String idioma = "";
+            switch (opcion){
+                case 1:
+                    idioma = "en";
+                    break;
+                case 2:
+                    idioma = "es";
+                    break;
+                case 3:
+                    idioma = "fr";
+                    break;
+                case 4:
+                    idioma = "pt";
+                    break;
+                case 5:
+                    idioma = "de";
+                    break;
+            }
+
+            String finalIdioma = idioma;
+            List<Libro> libros = repositorio.findAll().stream()
+                    .filter(l-> l.getIdioma().equals(finalIdioma))
+                    .collect(Collectors.toList());
+
+
+            libros.forEach(System.out::println);
+
+
+        }
+    }
+
+
+
 }
